@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) 2026 OpenHelloMiddle Contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 use clap::Parser;
 use enigo::{Coordinate, Enigo, Mouse, Settings};
 
