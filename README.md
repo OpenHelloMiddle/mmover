@@ -1,36 +1,30 @@
-# Mouse-Mover
-The Mouse-Moverm project is a component of OpenHelloMiddle, which can be used to move the mouse pointer.
+# mmover
 
-Usage: 
+## How to use
 
-"Options:
+```
+Usage: mmover [options]
+Options:
+  -x=[value]         Move mouse on X axis
+  -y=[value]         Move mouse on Y axis
+  --click-left       Click left button
+  --click-right      Click right button
+  --click-middle     Click middle button
+  --click-forward    Click forward side button
+  --click-back       Click back side button
+  --roll=<N> -r=<N>  Scroll wheel up by N
+  --get, -g          Get current mouse position
+  --help, -h         Show this help
+```
 
--x=[value]    Move mouse on X axis. Value can be:
+## Build
 
-+ : Move right 1 pixel
+```shell
+cargo build --release
+```
 
-- : Move left 1 pixel
+## Download
 
-+N : Move right N pixels
+No way.
 
--N : Move left N pixels
-
-N : Move to absolute position N
-
-(empty) : Don't move on X axis
-
--y=[value]    Move mouse on Y axis. Same values as -x
-
--h, --help    Show this help message
-
-Examples:
-
--x=+ -y=+        # Move right and down 1 pixel
-
--x=+100 -y=-50   # Move right 100 pixels, up 50 pixels
-
--x=100 -y=200    # Move to absolute position (100,200)
-
--x=- -y=+        # Move left 1 pixel, down 1 pixel
-
--x= -y=100       # X doesn't move, Y moves to 100
+Get ample food and clothing by working with our own hands.
