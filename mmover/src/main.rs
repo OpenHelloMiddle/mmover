@@ -14,6 +14,9 @@ struct Args {
     #[arg(short, long)]
     y: Option<String>,
 
+    #[arg(short, long)]
+    get: bool,
+
     #[arg(long)]
     click_left: bool,
 
@@ -41,6 +44,7 @@ fn parse_coord(input: &str) -> Result<(bool, i32), String> {
 }
 
 fn main() {
+    let mut executed = false;
     let args = Args::parse();
 
     let mut enigo = match Enigo::new(&Settings::default()) {
@@ -50,6 +54,18 @@ fn main() {
             std::process::exit(1);
         }
     };
+
+    if args.get {
+        match enigo.location() {
+            Ok((x, y)) => {
+                println!("Mouse position: ({}, {})", x, y);
+            }
+            Err(e) => {
+                eprintln!("Failed to get mouse position: {}", e);
+            }
+        }
+        executed = true;
+    }
 
     let mut use_abs = false;
     let mut target_x = 0i32;
@@ -93,13 +109,12 @@ fn main() {
         println!("Success, M({}, {})", target_x, target_y);
     }
 
-    let mut clicked = false;
     if args.click_left {
         if let Err(e) = enigo.button(Button::Left, enigo::Direction::Click) {
             eprintln!("Left click failed: {}", e);
         } else {
             println!("Left clicked");
-            clicked = true;
+            executed = true;
         }
     }
 
@@ -108,7 +123,7 @@ fn main() {
             eprintln!("Right click failed: {}", e);
         } else {
             println!("Right clicked");
-            clicked = true;
+            executed = true;
         }
     }
 
@@ -117,7 +132,7 @@ fn main() {
             eprintln!("Middle click failed: {}", e);
         } else {
             println!("Middle clicked");
-            clicked = true;
+            executed = true;
         }
     }
 
@@ -126,7 +141,7 @@ fn main() {
             eprintln!("Forward click failed: {}", e);
         } else {
             println!("Forward clicked");
-            clicked = true;
+            executed = true;
         }
     }
 
@@ -135,7 +150,7 @@ fn main() {
             eprintln!("Back click failed: {}", e);
         } else {
             println!("Back clicked");
-            clicked = true;
+            executed = true;
         }
     }
 
@@ -145,11 +160,11 @@ fn main() {
                 eprintln!("Scroll failed: {}", e);
             } else {
                 println!("Scrolled {} ({})", roll_amount.abs(), if roll_amount > 0 { "up" } else { "down" });
-                clicked = true;
+                executed = true;
             }
         }
 
-    if clicked {
+    if executed {
         println!("Success");
     } else if !use_abs {
         println!("Success, but nothing happened.");
