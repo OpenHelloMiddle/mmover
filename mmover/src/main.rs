@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 use clap::Parser;
-use enigo::{Button, Coordinate, Enigo, Mouse, Settings};
+use enigo::{Axis, Button, Coordinate, Enigo, Mouse, Settings};
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -28,6 +28,9 @@ struct Args {
 
     #[arg(long)]
     click_back: bool,
+
+    #[arg(short, long)]
+    roll: Option<i32>,
 }
 
 fn parse_coord(input: &str) -> Result<(bool, i32), String> {
@@ -135,6 +138,16 @@ fn main() {
             clicked = true;
         }
     }
+
+    if let Some(roll_amount) = args.roll
+        && roll_amount != 0 {
+            if let Err(e) = enigo.scroll(roll_amount, Axis::Vertical) {
+                eprintln!("Scroll failed: {}", e);
+            } else {
+                println!("Scrolled {} ({})", roll_amount.abs(), if roll_amount > 0 { "up" } else { "down" });
+                clicked = true;
+            }
+        }
 
     if clicked {
         println!("Success");
