@@ -6,7 +6,26 @@ use clap::Parser;
 use enigo::{Axis, Button, Coordinate, Enigo, Mouse, Settings};
 
 #[derive(Parser, Debug)]
-#[command(author, version, about, long_about = None)]
+#[command(
+    author,
+    version,
+    about,
+    long_about = None,
+    help_template = "\
+Usage: {name} [options]
+Options:
+  -x=[value]         Move mouse on X axis
+  -y=[value]         Move mouse on Y axis
+  --click-left       Click left button
+  --click-right      Click right button
+  --click-middle     Click middle button
+  --click-forward    Click forward side button
+  --click-back       Click back side button
+  --roll=<N> -r=<N>  Scroll wheel up by N
+  --get, -g          Get current mouse position
+  --help, -h         Show this help
+"
+)]
 struct Args {
     #[arg(short, long)]
     x: Option<String>,
