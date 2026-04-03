@@ -24,5 +24,7 @@ cargo build --release
 ```
 
 ## Download
-- For stable releases, please go to [Github Releases page](https://github.com/OpenHelloMiddle/mmover/releases)
-- For canary build, please check [Github Actions](https://github.com/OpenHelloMiddle/mmover/actions/workflows/build.yml?query=branch%3Amain)
+
+No way.
+
+Get ample food and clothing by working with our own hands.
