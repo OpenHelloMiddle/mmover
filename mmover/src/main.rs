@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 use clap::Parser;
-use enigo::{Coordinate, Enigo, Mouse, Settings};
+use enigo::{Button, Coordinate, Enigo, Mouse, Settings};
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -13,6 +13,21 @@ struct Args {
 
     #[arg(short, long)]
     y: Option<String>,
+
+    #[arg(long)]
+    click_left: bool,
+
+    #[arg(long)]
+    click_right: bool,
+
+    #[arg(long)]
+    click_middle: bool,
+
+    #[arg(long)]
+    click_forward: bool,
+
+    #[arg(long)]
+    click_back: bool,
 }
 
 fn parse_coord(input: &str) -> Result<(bool, i32), String> {
@@ -73,7 +88,57 @@ fn main() {
         enigo.move_mouse(target_x, target_y, Coordinate::Abs)
             .expect("Absolute movement failure");
         println!("Success, M({}, {})", target_x, target_y);
-    } else {
+    }
+
+    let mut clicked = false;
+    if args.click_left {
+        if let Err(e) = enigo.button(Button::Left, enigo::Direction::Click) {
+            eprintln!("Left click failed: {}", e);
+        } else {
+            println!("Left clicked");
+            clicked = true;
+        }
+    }
+
+    if args.click_right {
+        if let Err(e) = enigo.button(Button::Right, enigo::Direction::Click) {
+            eprintln!("Right click failed: {}", e);
+        } else {
+            println!("Right clicked");
+            clicked = true;
+        }
+    }
+
+    if args.click_middle {
+        if let Err(e) = enigo.button(Button::Middle, enigo::Direction::Click) {
+            eprintln!("Middle click failed: {}", e);
+        } else {
+            println!("Middle clicked");
+            clicked = true;
+        }
+    }
+
+    if args.click_forward {
+        if let Err(e) = enigo.button(Button::Forward, enigo::Direction::Click) {
+            eprintln!("Forward click failed: {}", e);
+        } else {
+            println!("Forward clicked");
+            clicked = true;
+        }
+    }
+
+    if args.click_back {
+        if let Err(e) = enigo.button(Button::Back, enigo::Direction::Click) {
+            eprintln!("Back click failed: {}", e);
+        } else {
+            println!("Back clicked");
+            clicked = true;
+        }
+    }
+
+    if clicked {
         println!("Success");
+    } else if !use_abs {
+        println!("Success, but nothing happened.");
     }
 }
