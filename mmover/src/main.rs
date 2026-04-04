@@ -132,71 +132,38 @@ fn main() {
         println!("Success, M({}, {})", target_x, target_y);
     }
 
-    if args.click_left {
-        if let Err(e) = enigo.button(Button::Left, enigo::Direction::Click) {
-            eprintln!("Left click failed: {}", e);
-        } else {
-            println!("Left clicked");
-            executed = true;
-        }
-    }
+    let click_tasks = [
+        (args.click_left,   Button::Left,   "Left"),
+        (args.click_right,  Button::Right,  "Right"),
+        (args.click_middle, Button::Middle, "Middle"),
+        (args.click_forward,Button::Forward,"Forward"),
+        (args.click_back,   Button::Back,   "Back"),
+    ];
 
-    if args.click_right {
-        if let Err(e) = enigo.button(Button::Right, enigo::Direction::Click) {
-            eprintln!("Right click failed: {}", e);
-        } else {
-            println!("Right clicked");
-            executed = true;
-        }
-    }
-
-    if args.click_middle {
-        if let Err(e) = enigo.button(Button::Middle, enigo::Direction::Click) {
-            eprintln!("Middle click failed: {}", e);
-        } else {
-            println!("Middle clicked");
-            executed = true;
-        }
-    }
-
-    if args.click_forward {
-        if let Err(e) = enigo.button(Button::Forward, enigo::Direction::Click) {
-            eprintln!("Forward click failed: {}", e);
-        } else {
-            println!("Forward clicked");
-            executed = true;
-        }
-    }
-
-    if args.click_back {
-        if let Err(e) = enigo.button(Button::Back, enigo::Direction::Click) {
-            eprintln!("Back click failed: {}", e);
-        } else {
-            println!("Back clicked");
-            executed = true;
-        }
-    }
-
-    if let Some(vertical_roll_amount) = args.vertical_roll
-        && vertical_roll_amount != 0 {
-            if let Err(e) = enigo.scroll(vertical_roll_amount, Axis::Vertical) {
-                eprintln!("Vertical Scroll failed: {}", e);
+    for (should_click, button, name) in click_tasks {
+        if should_click {
+            if let Err(e) = enigo.button(button, enigo::Direction::Click) {
+                eprintln!("{} click failed: {}", name, e);
             } else {
-                println!("Vertical Scrolled {} ({})", vertical_roll_amount.abs(), if vertical_roll_amount > 0 { "down" } else { "up" });
+                println!("{} clicked", name);
                 executed = true;
             }
         }
+    }
 
-    if let Some(horizontal_roll_amount) = args.horizontal_roll
-        && horizontal_roll_amount != 0 {
-            if let Err(e) = enigo.scroll(horizontal_roll_amount, Axis::Horizontal) {
-                eprintln!("Horizontal Scroll failed: {}", e);
+    let mut do_scroll = |opt: Option<i32>, axis: Axis, name: &str, pos: &str, neg: &str| {
+        if let Some(amount) = opt && amount != 0 {
+            if let Err(e) = enigo.scroll(amount, axis) {
+                eprintln!("{} scroll failed: {}", name, e);
             } else {
-                println!("Horizontal Scrolled {} ({})", horizontal_roll_amount.abs(), if horizontal_roll_amount > 0 { "right" } else { "left" });
+                println!("{} Scrolled {} ({})", name, amount.abs(), if amount > 0 { pos } else { neg });
                 executed = true;
             }
         }
+    };
 
+    do_scroll(args.vertical_roll,  Axis::Vertical,  "Vertical",  "down", "up");
+    do_scroll(args.horizontal_roll,Axis::Horizontal,"Horizontal","right","left");
 
     if executed {
         println!("Success");
