@@ -14,16 +14,17 @@ use enigo::{Axis, Button, Coordinate, Enigo, Mouse, Settings};
     help_template = "\
 Usage: {name} [options]
 Options:
-  -x=[value]         Move mouse on X axis
-  -y=[value]         Move mouse on Y axis
-  --click-left       Click left button
-  --click-right      Click right button
-  --click-middle     Click middle button
-  --click-forward    Click forward side button
-  --click-back       Click back side button
-  --roll=<N> -r=<N>  Scroll wheel up by N
-  --get, -g          Get current mouse position
-  --help, -h         Show this help
+  -x=[value]            Move mouse on X axis
+  -y=[value]            Move mouse on Y axis
+  --click-left          Click left button
+  --click-right         Click right button
+  --click-middle        Click middle button
+  --click-forward       Click forward side button
+  --click-back          Click back side button
+  --vertical-roll=<N>   Vertical Scroll
+  --horizontal-roll=<N> Scroll wheel up by N
+  --get, -g             Get current mouse position
+  --help                Show this help
 "
 )]
 struct Args {
@@ -52,7 +53,10 @@ struct Args {
     click_back: bool,
 
     #[arg(short, long)]
-    roll: Option<i32>,
+    vertical_roll: Option<i32>,
+
+    #[arg(short, long)]
+    horizontal_roll: Option<i32>,
 }
 
 fn parse_coord(input: &str) -> Result<(bool, i32), String> {
@@ -173,15 +177,26 @@ fn main() {
         }
     }
 
-    if let Some(roll_amount) = args.roll
-        && roll_amount != 0 {
-            if let Err(e) = enigo.scroll(roll_amount, Axis::Vertical) {
-                eprintln!("Scroll failed: {}", e);
+    if let Some(vertical_roll_amount) = args.vertical_roll
+        && vertical_roll_amount != 0 {
+            if let Err(e) = enigo.scroll(vertical_roll_amount, Axis::Vertical) {
+                eprintln!("Vertical Scroll failed: {}", e);
             } else {
-                println!("Scrolled {} ({})", roll_amount.abs(), if roll_amount > 0 { "up" } else { "down" });
+                println!("Vertical Scrolled {} ({})", vertical_roll_amount.abs(), if vertical_roll_amount > 0 { "down" } else { "up" });
                 executed = true;
             }
         }
+
+    if let Some(horizontal_roll_amount) = args.horizontal_roll
+        && horizontal_roll_amount != 0 {
+            if let Err(e) = enigo.scroll(horizontal_roll_amount, Axis::Horizontal) {
+                eprintln!("Horizontal Scroll failed: {}", e);
+            } else {
+                println!("Horizontal Scrolled {} ({})", horizontal_roll_amount.abs(), if horizontal_roll_amount > 0 { "right" } else { "left" });
+                executed = true;
+            }
+        }
+
 
     if executed {
         println!("Success");
