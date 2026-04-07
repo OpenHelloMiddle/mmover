@@ -22,7 +22,7 @@ Options:
   --click-forward       Click forward side button
   --click-back          Click back side button
   --vertical-roll=<N>   Vertical Scroll
-  --horizontal-roll=<N> Scroll wheel up by N
+  --horizontal-roll=<N> Horizontal Scroll
   --get, -g             Get current mouse position
   --help                Show this help
 "
