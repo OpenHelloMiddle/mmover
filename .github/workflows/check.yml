@@ -41,9 +41,7 @@ jobs:
       - name: Clippy
         run: |
           cd mmover
-          cargo clippy --all-targets --all-features --workspace \
-            --target ${{ matrix.target }} -- \
-            -D warnings
+          cargo clippy --all-targets --all-features --workspace --target ${{ matrix.target }} -- -D warnings
 
   tests:
     name: Tests
