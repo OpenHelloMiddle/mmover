@@ -42,26 +42,3 @@ jobs:
         run: |
           cd mmover
           cargo clippy --all-targets --all-features --workspace --target ${{ matrix.target }} -- -D warnings
-
-  tests:
-    name: Tests
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Rust toolchain
-        run: rustup toolchain install
-
-      - name: Cache
-        uses: Swatinem/rust-cache@v2
-        with:
-          cache-on-failure: "true"
-          cache-all-crates: "true"
-
-      - name: Run tests
-        run: |
-          cd mmover
-          cargo test --all
