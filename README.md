@@ -3,19 +3,21 @@
 ## How to use
 
 ```
-Usage: mmover [options]
+Usage: mmover [OPTIONS]
+
 Options:
-  -x=[value]            Move mouse on X axis
-  -y=[value]            Move mouse on Y axis
-  --click-left          Click left button
-  --click-right         Click right button
-  --click-middle        Click middle button
-  --click-forward       Click forward side button
-  --click-back          Click back side button
-  --vertical-roll=<N>   Vertical Scroll
-  --horizontal-roll=<N> Horizontal Scroll
-  --get, -g             Get current mouse position
-  --help                Show this help
+  -x, --x <X>                              Move mouse on X axis (supports +10/-10 for relative)
+  -y, --y <Y>                              Move mouse on Y axis (supports +10/-10 for relative)
+  -g, --get                                Get current mouse position
+      --click-left                         Click left button
+      --click-right                        Click right button
+      --click-middle                       Click middle button
+      --click-forward                      Click forward side button
+      --click-back                         Click back side button
+  -v, --vertical-roll <VERTICAL_ROLL>      Vertical scroll amount
+  -h, --horizontal-roll <HORIZONTAL_ROLL>  Horizontal scroll amount
+  -h, --help                               Print help
+  -V, --version                            Print version
 ```
 
 ## Build
